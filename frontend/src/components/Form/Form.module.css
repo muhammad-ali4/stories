@@ -1,0 +1,18 @@
+.paper {
+  padding: 18px 18px 0;
+}
+
+.postForm {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.fileInput {
+  width: 97%;
+  margin: 10px 0;
+}
+
+.submitButton {
+  margin-bottom: 10px !important;
+}

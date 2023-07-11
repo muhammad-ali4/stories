@@ -1,0 +1,41 @@
+.appBar {
+  border-radius: 15px;
+  margin: 30px 0;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.brandContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  color: #ff7885;
+  text-decoration: none;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 400px;
+}
+
+.img {
+  height: 60px;
+  margin-left: 10px;
+}
+
+.profile {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+}
