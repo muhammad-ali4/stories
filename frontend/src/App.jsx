@@ -8,13 +8,15 @@ import Auth from "./features/Auth/Auth";
 import Error from "./Pages/Error/Error";
 
 function App() {
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Container maxWidth="lg">
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
+          <Route element={<Navbar />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+          </Route>
           <Route path="*" element={<Error />} />
         </Routes>
       </Container>

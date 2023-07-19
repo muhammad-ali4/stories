@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import {
@@ -15,6 +17,7 @@ import Input from "./Input";
 import styles from "./Auth.module.css";
 
 function Auth() {
+  const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -24,6 +27,22 @@ function Auth() {
     setShowPassword((showPassword) => !showPassword);
 
   const handleChange = () => {};
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    const decoded = jwt_decode(credentialResponse.credential);
+    const { name, picture, sub } = decoded;
+    const user = {
+      id: sub,
+      name: name,
+      picture: picture,
+    };
+
+    localStorage.setItem("profile", JSON.stringify({ ...user }));
+
+    navigate("/");
+
+    // await axios.post("http://localhost:5000/users", user);
+  };
 
   const handleSubmit = () => {};
 
@@ -77,10 +96,7 @@ function Auth() {
           </Grid>
           <GoogleLogin
             className={styles.googleButton}
-            onSuccess={(credentialResponse) => {
-              const user = jwt_decode(credentialResponse);
-              console.log(user);
-            }}
+            onSuccess={handleGoogleSuccess}
             onError={() => {
               console.log("Login Failed");
             }}
