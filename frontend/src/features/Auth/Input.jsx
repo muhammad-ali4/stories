@@ -7,6 +7,7 @@ function Input(props) {
     name,
     label,
     type,
+    value,
     half,
     autoFocus,
     handleChange,
@@ -18,6 +19,7 @@ function Input(props) {
       <TextField
         name={name}
         label={label}
+        value={value}
         autoFocus={autoFocus}
         variant="outlined"
         type={type}

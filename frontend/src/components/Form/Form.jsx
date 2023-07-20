@@ -11,6 +11,7 @@ import styles from "./Form.module.css";
 
 export default function Form(props) {
   const { curId, setCurId } = props;
+
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

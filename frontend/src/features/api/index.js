@@ -34,6 +34,9 @@ export const apiSlice = createApi({
         method: "PATCH",
         body: story,
       }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Story", id: arg.story },
+      ],
     }),
     deleteStory: builder.mutation({
       query: (story) => ({

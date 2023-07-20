@@ -5,6 +5,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import storyRoutes from "./routes/storyRoutes.js";
+import tellerRoutes from "./routes/tellerRoutes.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/stories", storyRoutes);
+app.use("/teller", tellerRoutes);
 
 const MONGO_URL = process.env.DB_URL;
 const PORT = process.env.PORT || 5000;

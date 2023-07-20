@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
+import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import {
@@ -21,18 +21,28 @@ function Auth() {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handleLastNameChange = (e) => setLastName(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
+
   const handleSwitchMode = () => setIsSignup((isSignup) => !isSignup);
 
   const handleShowPassword = () =>
     setShowPassword((showPassword) => !showPassword);
 
-  const handleChange = () => {};
-
   const handleGoogleSuccess = async (credentialResponse) => {
     const decoded = jwt_decode(credentialResponse.credential);
     const { name, picture, sub } = decoded;
     const user = {
-      id: sub,
+      _id: sub,
       name: name,
       picture: picture,
     };
@@ -40,11 +50,46 @@ function Auth() {
     localStorage.setItem("profile", JSON.stringify({ ...user }));
 
     navigate("/");
-
-    // await axios.post("http://localhost:5000/users", user);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const teller = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+    };
+    if (!isSignup) {
+      axios
+        .post("http://localhost:5000/teller/login", teller)
+        .then(function (response) {
+          const { result } = response.data;
+          localStorage.setItem("profile", JSON.stringify({ ...result }));
+          navigate("/");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      axios
+        .post("http://localhost:5000/teller/signup", teller)
+        .then(function (response) {
+          const { result } = response.data;
+          localStorage.setItem("profile", JSON.stringify({ ...result }));
+          navigate("/");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -60,13 +105,15 @@ function Auth() {
                 <Input
                   name="firstName"
                   label="First Name"
-                  handleChange={handleChange}
+                  value={firstName}
+                  handleChange={handleFirstNameChange}
                   half
                 />
                 <Input
                   name="lastName"
                   label="Last Name"
-                  handleChange={handleChange}
+                  value={lastName}
+                  handleChange={handleLastNameChange}
                   half
                 />
               </>
@@ -75,13 +122,15 @@ function Auth() {
               name="email"
               label="Email Address"
               type="email"
-              handleChange={handleChange}
+              value={email}
+              handleChange={handleEmailChange}
             />
             <Input
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
-              handleChange={handleChange}
+              value={password}
+              handleChange={handlePasswordChange}
               handleShowPassword={handleShowPassword}
             />
             {isSignup && (
@@ -89,7 +138,8 @@ function Auth() {
                 name="confirmPassword"
                 label="Confirm Password"
                 type={showPassword ? "text" : "password"}
-                handleChange={handleChange}
+                value={confirmPassword}
+                handleChange={handleConfirmPasswordChange}
                 handleShowPassword={handleShowPassword}
               />
             )}

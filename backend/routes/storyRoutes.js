@@ -7,14 +7,15 @@ import {
   likeStory,
   deleteStory,
 } from "../controllers/stories.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.get("/", getStories);
 router.get("/:id", getStory);
-router.post("/", createStory);
-router.patch("/:id", updateStory);
-router.patch("/:id/like", likeStory);
-router.delete("/:id", deleteStory);
+router.post("/", auth, createStory);
+router.patch("/:id", auth, updateStory);
+router.patch("/:id/like", auth, likeStory);
+router.delete("/:id", auth, deleteStory);
 
 export default router;
