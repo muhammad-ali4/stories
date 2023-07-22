@@ -1,8 +1,18 @@
+import axios from "axios";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5000",
+    prepareHeaders: (headers) => {
+      headers.set(
+        "authorization",
+        `Bearer ${JSON.parse(localStorage.getItem("profile"))?.token}`
+      );
+      return headers;
+    },
+  }),
   tagTypes: ["Story"],
   endpoints: (builder) => ({
     getStories: builder.query({
@@ -57,3 +67,7 @@ export const {
   useLikeStoryMutation,
   useDeleteStoryMutation,
 } = apiSlice;
+
+const API = axios.create({ baseURL: "http://localhost:5000/" });
+export const login = (teller) => API.post("/teller/login", teller);
+export const signup = (teller) => API.post("/teller/signup", teller);

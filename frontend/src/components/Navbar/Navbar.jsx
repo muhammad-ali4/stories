@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
+import jwt_decode from "jwt-decode";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { AppBar, Button, Avatar, Toolbar, Typography } from "@mui/material";
 
 import headerImg from "../../assets/images/happy-thoughts.png";
 import styles from "./Navbar.module.css";
 
-function Navbar() {
+function Navbar(props) {
+  const { setAuthor } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const [user, setUser] = useState(null);
+  const [teller, setTeller] = useState(null);
 
   const handleLogout = () => {
-    setUser(null);
+    setTeller(null);
+    setAuthor("");
     localStorage.removeItem("profile");
     navigate("/");
   };
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("profile")));
+    if (teller?.token) {
+      const decodedToken = jwt_decode(teller.token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        handleLogout();
+      }
+    }
+
+    setTeller(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
 
   return (
@@ -36,17 +47,17 @@ function Navbar() {
           <img className={styles.img} src={headerImg} />
         </div>
         <Toolbar className={styles.toolbar}>
-          {user ? (
+          {teller ? (
             <div className={styles.profile}>
               <Avatar
                 className={styles.purple}
-                alt={user?.name}
-                src={user?.picture}
+                alt={teller?.name}
+                src={teller?.picture}
               >
-                {user?.name.charAt(0)}
+                {teller?.name.charAt(0)}
               </Avatar>
               <Typography className={styles.name} variant="h6">
-                {user?.name}
+                {teller?.name}
               </Typography>
               <Button
                 variant="contained"

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import {
@@ -13,10 +12,13 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
+import { login, signup } from "../api";
+
 import Input from "./Input";
 import styles from "./Auth.module.css";
 
-function Auth() {
+function Auth(props) {
+  const { setAuthor } = props;
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -43,52 +45,63 @@ function Auth() {
     const { name, picture, sub } = decoded;
     const user = {
       _id: sub,
+      token: credentialResponse.credential,
       name: name,
       picture: picture,
     };
 
     localStorage.setItem("profile", JSON.stringify({ ...user }));
-
+    setAuthor(JSON.parse(localStorage.getItem("profile"))?.name);
     navigate("/");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const teller = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
     if (!isSignup) {
-      axios
-        .post("http://localhost:5000/teller/login", teller)
+      const teller = {
+        email: email,
+        password: password,
+      };
+      login(teller)
         .then(function (response) {
-          const { result } = response.data;
-          localStorage.setItem("profile", JSON.stringify({ ...result }));
+          const { result, token } = response.data;
+          localStorage.setItem("profile", JSON.stringify({ ...result, token }));
+
+          setEmail("");
+          setPassword("");
+          setAuthor(JSON.parse(localStorage.getItem("profile"))?.name);
+
           navigate("/");
         })
         .catch(function (error) {
           console.log(error);
         });
     } else {
-      axios
-        .post("http://localhost:5000/teller/signup", teller)
+      const teller = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+      };
+      signup(teller)
         .then(function (response) {
-          const { result } = response.data;
-          localStorage.setItem("profile", JSON.stringify({ ...result }));
+          const { result, token } = response.data;
+          localStorage.setItem("profile", JSON.stringify({ ...result, token }));
+
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          setAuthor(JSON.parse(localStorage.getItem("profile"))?.name);
+
           navigate("/");
         })
         .catch(function (error) {
           console.log(error);
         });
     }
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
   };
 
   return (

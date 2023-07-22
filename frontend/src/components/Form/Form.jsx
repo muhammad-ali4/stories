@@ -10,15 +10,13 @@ import {
 import styles from "./Form.module.css";
 
 export default function Form(props) {
-  const { curId, setCurId } = props;
+  const { author, curId, setCurId } = props;
 
-  const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
   const [image, setImage] = useState("");
 
-  const handleAuthorChange = (e) => setAuthor(e.target.value);
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleContentChange = (e) => setContent(e.target.value);
   const handleTagsChange = (e) => setTags(e.target.value);
@@ -29,7 +27,6 @@ export default function Form(props) {
 
   useEffect(() => {
     if (curId) {
-      setAuthor(story.author);
       setTitle(story.title);
       setContent(story.content);
       setTags(story.tags.join(" "));
@@ -38,13 +35,12 @@ export default function Form(props) {
 
   const handelCancelEdit = () => {
     setCurId(null);
-    setAuthor("");
     setTitle("");
     setContent("");
     setTags("");
   };
 
-  const canSave = [author, title, content, tags].every(Boolean) && !isLoading;
+  const canSave = [title, content, tags].every(Boolean) && !isLoading;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +54,6 @@ export default function Form(props) {
           tags,
           image,
         }).unwrap();
-        setAuthor("");
         setTitle("");
         setContent("");
         setTags("");
@@ -76,7 +71,6 @@ export default function Form(props) {
           tags,
           image,
         }).unwrap();
-        setAuthor("");
         setTitle("");
         setContent("");
         setTags("");
@@ -86,6 +80,16 @@ export default function Form(props) {
       }
     }
   };
+
+  if (!author) {
+    return (
+      <Paper className={styles.paper}>
+        <Typography variant="h6" align="center">
+          Please log in to create stories and like other stories.
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={styles.paper}>
@@ -98,14 +102,6 @@ export default function Form(props) {
         <Typography variant="h6">
           {curId ? "Editing" : "Tell"} a Story
         </Typography>
-        <TextField
-          name="author"
-          variant="outlined"
-          label="Author"
-          fullWidth
-          value={author}
-          onChange={handleAuthorChange}
-        />
         <TextField
           name="title"
           variant="outlined"

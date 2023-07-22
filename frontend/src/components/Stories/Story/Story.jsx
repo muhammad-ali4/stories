@@ -9,6 +9,7 @@ import {
 } from "@mui/material/";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import {
@@ -16,15 +17,39 @@ import {
   useDeleteStoryMutation,
 } from "../../../features/api";
 
-import storyImg from "../../../assets/images/chainsawman.jpg";
+import storyImg from "../../../assets/images/thumb.jpg";
 import styles from "./Story.module.css";
 
 function Story(props) {
   const { story, setCurId } = props;
   const [likeStory] = useLikeStoryMutation();
   const [deleteStory] = useDeleteStoryMutation();
+  const teller = JSON.parse(localStorage.getItem("profile"));
 
   const timeAgo = DateTime.fromISO(story.createdAt).toRelative();
+
+  const Likes = () => {
+    if (story.likes.length > 0) {
+      return story.likes.find((like) => like === teller?._id) ? (
+        <>
+          <ThumbUpIcon fontSize="small" />
+          &nbsp;Liked:&nbsp;
+          {story.likes.length}
+        </>
+      ) : (
+        <>
+          <ThumbUpAltOutlinedIcon fontSize="small" />
+          &nbsp;Like:&nbsp;{story.likes.length}
+        </>
+      );
+    }
+    return (
+      <>
+        <ThumbUpAltOutlinedIcon fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
 
   return (
     <Card className={styles.card}>
@@ -37,15 +62,17 @@ function Story(props) {
         <Typography variant="h6">{story.author}</Typography>
         <Typography variant="body2">{timeAgo}</Typography>
       </div>
-      <div className={styles.overlay2}>
-        <Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={() => setCurId(story._id)}
-        >
-          <MoreHorizIcon fontSize="default" />
-        </Button>
-      </div>
+      {teller?._id === story.creator && (
+        <div className={styles.overlay2}>
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={() => setCurId(story._id)}
+          >
+            <MoreHorizIcon fontSize="default" />
+          </Button>
+        </div>
+      )}
       <div className={styles.tags}>
         <Typography variant="body2">
           {story.tags.map((tag) => `#${tag} `)}
@@ -60,15 +87,20 @@ function Story(props) {
         </Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>
-        <Button size="small" color="primary" onClick={() => likeStory(story)}>
-          <ThumbUpIcon fontSize="small" />
-          &nbsp;Like:&nbsp;
-          <span className={styles.likes}>{story.likeCount}</span>
+        <Button
+          size="small"
+          color="primary"
+          disabled={!teller}
+          onClick={() => likeStory(story)}
+        >
+          <Likes />
         </Button>
-        <Button size="small" color="error" onClick={() => deleteStory(story)}>
-          <DeleteIcon fontSize="small" />
-          Delete
-        </Button>
+        {teller?._id === story.creator && (
+          <Button size="small" color="error" onClick={() => deleteStory(story)}>
+            <DeleteIcon fontSize="small" />
+            Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
