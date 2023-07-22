@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: "https://stories-app-api.vercel.app/",
     prepareHeaders: (headers) => {
       headers.set(
         "authorization",
@@ -68,6 +68,6 @@ export const {
   useDeleteStoryMutation,
 } = apiSlice;
 
-const API = axios.create({ baseURL: "http://localhost:5000/" });
+const API = axios.create({ baseURL: "https://stories-app-api.vercel.app/" });
 export const login = (teller) => API.post("/teller/login", teller);
 export const signup = (teller) => API.post("/teller/signup", teller);

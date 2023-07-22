@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { AppBar, Button, Avatar, Toolbar, Typography } from "@mui/material";
 
-import headerImg from "../../assets/images/happy-thoughts.png";
+import headerImg from "../../assets/images/stories.png";
 import styles from "./Navbar.module.css";
 
 function Navbar(props) {
