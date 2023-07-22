@@ -3,10 +3,9 @@
   align-items: center;
 }
 
-.smMargin {
-  margin: 8px;
-}
-
-.actionDiv {
-  text-align: center;
+.noStories {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20%;
 }

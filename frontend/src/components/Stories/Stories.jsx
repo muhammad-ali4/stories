@@ -1,4 +1,4 @@
-import { Grid, CircularProgress, Typography } from "@mui/material";
+import { Grid, CircularProgress, Paper, Typography } from "@mui/material";
 
 import { useGetStoriesQuery } from "../../features/api";
 import Story from "./Story/Story";
@@ -25,15 +25,25 @@ function Stories(props) {
       </Grid>
     );
   } else if (isSuccess) {
-    content = (
-      <Grid className={styles.mainContainer} container alignItems="stretch">
-        {stories.map((story) => (
-          <Grid item key={story._id} xs={12} sm={6}>
-            <Story story={story} setCurId={setCurId} />
-          </Grid>
-        ))}
-      </Grid>
-    );
+    if (stories.length > 0) {
+      content = (
+        <Grid className={styles.mainContainer} container alignItems="stretch">
+          {stories.map((story) => (
+            <Grid item key={story._id} xs={12} md={3} sm={6}>
+              <Story story={story} setCurId={setCurId} />
+            </Grid>
+          ))}
+        </Grid>
+      );
+    } else {
+      content = (
+        <Paper className={styles.noStories} elevation={6}>
+          <Typography variant="h6">
+            No stories yet... Feel free to create some!
+          </Typography>
+        </Paper>
+      );
+    }
   } else if (isError) {
     content = (
       <Grid container alignItems="center" justifyContent="center">

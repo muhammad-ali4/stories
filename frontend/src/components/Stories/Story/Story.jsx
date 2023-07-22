@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { DateTime } from "luxon";
 import {
   Typography,
@@ -6,6 +7,7 @@ import {
   CardActions,
   CardContent,
   Button,
+  ButtonBase,
 } from "@mui/material/";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -22,11 +24,16 @@ import styles from "./Story.module.css";
 
 function Story(props) {
   const { story, setCurId } = props;
+  const navigate = useNavigate();
   const [likeStory] = useLikeStoryMutation();
   const [deleteStory] = useDeleteStoryMutation();
   const teller = JSON.parse(localStorage.getItem("profile"));
 
   const timeAgo = DateTime.fromISO(story.createdAt).toRelative();
+
+  const openStory = () => {
+    navigate(`/stories/${story._id}`);
+  };
 
   const Likes = () => {
     if (story.likes.length > 0) {
@@ -57,6 +64,7 @@ function Story(props) {
         className={styles.media}
         image={story.image || storyImg}
         title={story.title}
+        onClick={openStory}
       />
       <div className={styles.overlay}>
         <Typography variant="h6">{story.author}</Typography>
@@ -78,12 +86,17 @@ function Story(props) {
           {story.tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
-      <Typography className={styles.title} variant="h6" component="div">
+      <Typography
+        className={styles.title}
+        variant="h6"
+        component="div"
+        onClick={openStory}
+      >
         {story.title}
       </Typography>
-      <CardContent className={styles.content}>
+      <CardContent className={styles.content} onClick={openStory}>
         <Typography variant="body2" color="textSecondary">
-          {story.content}
+          {story.content.substring(0, 50)}...
         </Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>

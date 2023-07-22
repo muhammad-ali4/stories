@@ -1,0 +1,29 @@
+.media {
+  border-radius: 20px;
+  object-fit: cover;
+  width: 100%;
+  max-height: 400px;
+}
+
+.card {
+  display: flex;
+  width: 100%;
+}
+
+.section {
+  border-radius: 20px;
+  margin: 10px;
+  flex: 1;
+}
+
+.content {
+  font-size: 1.6rem !important;
+}
+
+.info {
+  margin-top: 30%;
+}
+
+.imageSection {
+  margin-left: 20px;
+}

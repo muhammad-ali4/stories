@@ -92,7 +92,7 @@ export default function Form(props) {
   }
 
   return (
-    <Paper className={styles.paper}>
+    <Paper className={styles.paper} elevation={6}>
       <form
         className={styles.postForm}
         autoComplete="off"
