@@ -83,9 +83,9 @@ export default function Form(props) {
 
   if (!author) {
     return (
-      <Paper className={styles.paper}>
+      <Paper className={styles.paper} elevation={6}>
         <Typography variant="h6" align="center">
-          Please log in to create stories and like other stories.
+          Log in to create stories and like other stories.
         </Typography>
       </Paper>
     );
