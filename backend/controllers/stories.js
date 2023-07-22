@@ -25,7 +25,7 @@ export const createStory = async (req, res) => {
   let tags = story.tags.split(" ");
   story.tags = tags;
 
-  const newStory = new Story(story);
+  const newStory = new Story({ ...story, creator: req.userId });
 
   try {
     await newStory.save();
@@ -51,14 +51,14 @@ export const updateStory = async (req, res) => {
 export const likeStory = async (req, res) => {
   const { id } = req.params;
 
-  if (!req.UserId) return res.json({ message: "Unauthenticated" });
+  if (!req.userId) return res.json({ message: "Unauthenticated" });
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with that ID");
 
   const story = await Story.findById(id);
 
-  const index = story.likesCount.findIndex((id) => id === String(req.userId));
+  const index = story.likes.findIndex((id) => id === String(req.userId));
 
   if (index === -1) {
     story.likes.push(req.userId);
@@ -68,7 +68,7 @@ export const likeStory = async (req, res) => {
 
   const updatedStory = await Story.findByIdAndUpdate(id, story, { new: true });
 
-  res.json(updateStory);
+  res.json(updatedStory);
 };
 
 export const deleteStory = async (req, res) => {

@@ -4,10 +4,11 @@ const storySchema = mongoose.Schema({
   title: String,
   content: String,
   author: String,
+  creator: String,
   tags: [String],
   image: String,
   likes: {
-    type: { String },
+    type: [String],
     default: [],
   },
   createdAt: {
