@@ -96,7 +96,7 @@ function Story(props) {
       </Typography>
       <CardContent className={styles.content} onClick={openStory}>
         <Typography variant="body2" color="textSecondary">
-          {story.content.substring(0, 50)}...
+          {story.content.substring(0, 120)}
         </Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>
