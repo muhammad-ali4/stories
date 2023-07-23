@@ -10,6 +10,7 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 import { login, signup } from "../api";
@@ -21,6 +22,7 @@ function Auth(props) {
   const { setAuthor } = props;
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const [firstName, setFirstName] = useState("");
@@ -57,6 +59,7 @@ function Auth(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     if (!isSignup) {
       const teller = {
         email: email,
@@ -70,10 +73,12 @@ function Auth(props) {
           setEmail("");
           setPassword("");
           setAuthor(JSON.parse(localStorage.getItem("profile"))?.name);
+          setIsSubmitting(false);
 
           navigate("/");
         })
         .catch(function (error) {
+          setIsSubmitting(false);
           alert(error.response.data.message);
         });
     } else {
@@ -95,10 +100,12 @@ function Auth(props) {
           setPassword("");
           setConfirmPassword("");
           setAuthor(JSON.parse(localStorage.getItem("profile"))?.name);
+          setIsSubmitting(false);
 
           navigate("/");
         })
         .catch(function (error) {
+          setIsSubmitting(false);
           alert(error.response.data.message);
         });
     }
@@ -173,15 +180,16 @@ function Auth(props) {
               alert("Login Failed");
             }}
           />
-          <Button
+          <LoadingButton
             className={styles.submit}
             type="submit"
             fullWidth
             variant="contained"
             color="error"
+            loading={isSubmitting}
           >
             {isSignup ? "Sign Up" : "Login"}
-          </Button>
+          </LoadingButton>
         </form>
         <Button onClick={handleSwitchMode}>
           {isSignup
