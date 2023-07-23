@@ -63,7 +63,7 @@ function StoryDetails() {
             <div className={styles.info}>
               <Divider style={{ margin: "20px 0" }} />
               <Typography variant="h6">
-                Created by:
+                Told by:
                 {` ${story.author}`}
               </Typography>
               <Typography variant="body1">

@@ -148,7 +148,6 @@ export default function Form(props) {
               size="lg"
               type="submit"
               fullWidth
-              loading={isUpdating}
             >
               Update
             </Button>
