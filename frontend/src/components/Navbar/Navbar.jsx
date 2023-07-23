@@ -29,7 +29,7 @@ function Navbar(props) {
     }
 
     setTeller(JSON.parse(localStorage.getItem("profile")));
-  }, [location]);
+  }, [location, teller]);
 
   return (
     <>
