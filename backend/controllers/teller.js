@@ -7,7 +7,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const foundTeller = await Teller.findOne({ email: { $gte: email } });
+    const foundTeller = await Teller.findOne({ email: email }).exec();
     if (!foundTeller)
       return res.status(404).json({ message: "User doesn't exist." });
 
@@ -35,7 +35,7 @@ export const signup = async (req, res) => {
   const { firstName, lastName, email, password, confirmPassword } = req.body;
 
   try {
-    const foundTeller = await Teller.findOne({ email: { $gte: email } });
+    const foundTeller = await Teller.findOne({ email: email }).exec();
     if (foundTeller)
       return res.status(400).json({ message: "User already exists." });
 
