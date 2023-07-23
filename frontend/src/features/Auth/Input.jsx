@@ -10,6 +10,7 @@ function Input(props) {
     value,
     half,
     autoFocus,
+    required,
     handleChange,
     handleShowPassword,
   } = props;
@@ -17,7 +18,7 @@ function Input(props) {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
       <TextField
-        required
+        required={required}
         name={name}
         label={label}
         value={value}

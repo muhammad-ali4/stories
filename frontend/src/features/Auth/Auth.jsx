@@ -74,7 +74,7 @@ function Auth(props) {
           navigate("/");
         })
         .catch(function (error) {
-          console.log(error);
+          alert(error.response.data.message);
         });
     } else {
       const teller = {
@@ -99,7 +99,7 @@ function Auth(props) {
           navigate("/");
         })
         .catch(function (error) {
-          console.log(error);
+          alert(error.response.data.message);
         });
     }
   };
@@ -120,6 +120,7 @@ function Auth(props) {
             {isSignup && (
               <>
                 <Input
+                  required
                   name="firstName"
                   label="First Name"
                   value={firstName}
@@ -127,15 +128,17 @@ function Auth(props) {
                   handleChange={handleFirstNameChange}
                 />
                 <Input
+                  required
                   name="lastName"
                   label="Last Name"
                   value={lastName}
-                  handleChange={handleLastNameChange}
                   half
+                  handleChange={handleLastNameChange}
                 />
               </>
             )}
             <Input
+              required
               name="email"
               label="Email Address"
               type="email"
@@ -143,6 +146,7 @@ function Auth(props) {
               handleChange={handleEmailChange}
             />
             <Input
+              required
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
@@ -152,6 +156,7 @@ function Auth(props) {
             />
             {isSignup && (
               <Input
+                required
                 name="confirmPassword"
                 label="Confirm Password"
                 type={showPassword ? "text" : "password"}
@@ -165,7 +170,7 @@ function Auth(props) {
             className={styles.googleButton}
             onSuccess={handleGoogleSuccess}
             onError={() => {
-              console.log("Login Failed");
+              alert("Login Failed");
             }}
           />
           <Button
