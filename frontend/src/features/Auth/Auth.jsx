@@ -111,7 +111,11 @@ function Auth(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant="h5">{isSignup ? "Sign Up" : "Login"}</Typography>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
           <Grid container spacing={2}>
             {isSignup && (
               <>
@@ -119,8 +123,8 @@ function Auth(props) {
                   name="firstName"
                   label="First Name"
                   value={firstName}
-                  handleChange={handleFirstNameChange}
                   half
+                  handleChange={handleFirstNameChange}
                 />
                 <Input
                   name="lastName"

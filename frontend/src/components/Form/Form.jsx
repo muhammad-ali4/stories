@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import FileBase64 from "react-file-base64";
 import { Typography, TextField, Paper, Button } from "@mui/material/";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 import {
   useGetStoryQuery,
@@ -83,7 +84,7 @@ export default function Form(props) {
 
   if (!author) {
     return (
-      <Paper className={styles.paper} elevation={6}>
+      <Paper className={styles.emptyPaper} elevation={6}>
         <Typography variant="h6" align="center">
           Log in to create stories and like other stories.
         </Typography>
@@ -96,7 +97,6 @@ export default function Form(props) {
       <form
         className={styles.postForm}
         autoComplete="off"
-        noValidate
         onSubmit={handleSubmit}
       >
         <Typography variant="h6">
@@ -106,26 +106,29 @@ export default function Form(props) {
           name="title"
           variant="outlined"
           label="Title"
-          fullWidth
           value={title}
+          fullWidth
+          required
           onChange={handleTitleChange}
         />
         <TextField
           name="story"
           variant="outlined"
           label="Story"
+          value={content}
           fullWidth
           multiline
           rows={3}
-          value={content}
+          required
           onChange={handleContentChange}
         />
         <TextField
           name="tags"
           variant="outlined"
           label="Tags"
-          fullWidth
           value={tags}
+          fullWidth
+          required
           onChange={handleTagsChange}
         />
         <div className={styles.fileInput}>
@@ -135,6 +138,7 @@ export default function Form(props) {
             onDone={({ base64 }) => setImage(base64)}
           />
         </div>
+
         {curId ? (
           <>
             <Button
@@ -144,6 +148,7 @@ export default function Form(props) {
               size="lg"
               type="submit"
               fullWidth
+              loading={isUpdating}
             >
               Update
             </Button>
@@ -157,16 +162,17 @@ export default function Form(props) {
             </Button>
           </>
         ) : (
-          <Button
+          <LoadingButton
             className={styles.submitButton}
             variant="contained"
             color="error"
             size="lg"
             type="submit"
             fullWidth
+            loading={isLoading}
           >
             Post
-          </Button>
+          </LoadingButton>
         )}
       </form>
     </Paper>

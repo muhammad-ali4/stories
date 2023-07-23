@@ -9,6 +9,7 @@ import {
   Button,
   ButtonBase,
 } from "@mui/material/";
+import LoadingButton from "@mui/lab/LoadingButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
@@ -26,7 +27,7 @@ function Story(props) {
   const { story, setCurId } = props;
   const navigate = useNavigate();
   const [likeStory] = useLikeStoryMutation();
-  const [deleteStory] = useDeleteStoryMutation();
+  const [deleteStory, { isLoading }] = useDeleteStoryMutation();
   const teller = JSON.parse(localStorage.getItem("profile"));
 
   const timeAgo = DateTime.fromISO(story.createdAt).toRelative();
@@ -96,7 +97,7 @@ function Story(props) {
       </Typography>
       <CardContent className={styles.content} onClick={openStory}>
         <Typography variant="body2" color="textSecondary">
-          {story.content.substring(0, 120)}
+          {story.content.substring(0, 27)}...
         </Typography>
       </CardContent>
       <CardActions className={styles.cardActions}>
@@ -109,10 +110,15 @@ function Story(props) {
           <Likes />
         </Button>
         {teller?._id === story.creator && (
-          <Button size="small" color="error" onClick={() => deleteStory(story)}>
+          <LoadingButton
+            size="small"
+            color="error"
+            onClick={() => deleteStory(story)}
+            loading={isLoading}
+          >
             <DeleteIcon fontSize="small" />
             Delete
-          </Button>
+          </LoadingButton>
         )}
       </CardActions>
     </Card>

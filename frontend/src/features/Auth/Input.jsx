@@ -17,6 +17,7 @@ function Input(props) {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
       <TextField
+        required
         name={name}
         label={label}
         value={value}
