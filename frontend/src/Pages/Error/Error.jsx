@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorCSS from "./Error.module.css";
+import Paper from "@mui/material/Paper";
+import styles from "./Error.module.css";
 
 function Error() {
   const navigate = useNavigate();
@@ -12,11 +13,9 @@ function Error() {
   });
 
   return (
-    <div className={ErrorCSS.container}>
-      <div className={ErrorCSS.error}>
-        <h2>Page not found :/</h2>
-        <h3>Redircting back to home...</h3>
-      </div>
+    <div className={styles.container}>
+      <h1>Page not found :/</h1>
+      <h4>Redircting back to stories...</h4>
     </div>
   );
 }

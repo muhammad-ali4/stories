@@ -1,11 +1,9 @@
 .container {
+  height: 80vh;
   max-width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.error {
-  max-width: fit-content;
-  text-align: center;
+  color: #fdfcdc;
 }
