@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { DateTime } from "luxon";
 import {
+  Grow,
   Paper,
   Grid,
   Divider,
@@ -37,49 +38,51 @@ function StoryDetails() {
     );
   } else if (isSuccess) {
     content = (
-      <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
-        <div className={styles.card}>
-          <div className={styles.section}>
-            <Typography variant="h3" component="h2">
-              {story.title}
-            </Typography>
-            <Typography
-              gutterBottom
-              variant="h6"
-              color="textSecondary"
-              component="h2"
-            >
-              {story.tags.map((tag) => `#${tag} `)}
-            </Typography>
-            <Typography
-              gutterBottom
-              variant="body1"
-              component="p"
-              className={styles.content}
-            >
-              {story.content}
-            </Typography>
+      <Grow in>
+        <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
+          <div className={styles.card}>
+            <div className={styles.section}>
+              <Typography variant="h3" component="h2">
+                {story.title}
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="h6"
+                color="textSecondary"
+                component="h2"
+              >
+                {story.tags.map((tag) => `#${tag} `)}
+              </Typography>
+              <Typography
+                gutterBottom
+                variant="body1"
+                component="p"
+                className={styles.content}
+              >
+                {story.content}
+              </Typography>
 
-            <div className={styles.info}>
-              <Divider style={{ margin: "20px 0" }} />
-              <Typography variant="h6">
-                Told by:
-                {` ${story.author}`}
-              </Typography>
-              <Typography variant="body1">
-                {DateTime.fromISO(story.createdAt).toRelative()}
-              </Typography>
+              <div className={styles.info}>
+                <Divider style={{ margin: "20px 0" }} />
+                <Typography variant="h6">
+                  Told by:
+                  {` ${story.author}`}
+                </Typography>
+                <Typography variant="body1">
+                  {DateTime.fromISO(story.createdAt).toRelative()}
+                </Typography>
+              </div>
+            </div>
+            <div className={styles.imageSection}>
+              <img
+                className={styles.media}
+                src={story.image || storyImg}
+                alt={story.title}
+              />
             </div>
           </div>
-          <div className={styles.imageSection}>
-            <img
-              className={styles.media}
-              src={story.image || storyImg}
-              alt={story.title}
-            />
-          </div>
-        </div>
-      </Paper>
+        </Paper>
+      </Grow>
     );
   } else if (isError) {
     content = (
